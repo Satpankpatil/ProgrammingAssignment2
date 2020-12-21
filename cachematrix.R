@@ -1,15 +1,53 @@
-## Put comments here that give an overall description of what your
-## functions do
+#Below function will do -
+#Function - I Creates a "Matrix" object that can cache its inverse####
+#Function - II Computes conditionally inverse of the matrix returned by Function I.####
 
-## Write a short comment describing this function
+
+##Function I####
+#1) Set the value of the vector
+#2) Get the value of the vector
+#3) Set the value of the inverse
+#4) Get the value of the inverse
 
 makeCacheMatrix <- function(x = matrix()) {
-
+  invrs <- NULL
+  set <- function(y) {
+    x <<- y
+    invrs <<- NULL
+  }
+  get <- function() x
+  setinv <- function() invrs <<- solve(x)
+  getinv <- function() invrs
+  list(set = set, get = get, setinv = setinv, getinv = getinv)
 }
 
+check <- makeCacheMatrix()
+check$set(matrix(1:4, 2))
+check$get()
 
-## Write a short comment describing this function
+check$setinv()
+check$getinv()
+ls(environment(check$set))
+
+## Function II####
+#Conditionally compute inverse.Skip if already calculated
 
 cacheSolve <- function(x, ...) {
-        ## Return a matrix that is the inverse of 'x'
+  invx <- x$getinv()
+  if(!is.null(invx)) {
+    message("getting cached data")
+    return(invx)
+  }
+  data <- x$get
+  invx <- solve(data, ...)
+  x$setinv(invx)
+  invx
 }
+
+# Clean Up####
+
+# Clear environment
+rm(list = ls()) 
+
+# Clear console
+cat("\014")  # ctrl+L
