@@ -21,27 +21,19 @@ makeCacheMatrix <- function(x = matrix()) {
   list(set = set, get = get, setinv = setinv, getinv = getinv)
 }
 
-check <- makeCacheMatrix()
-check$set(matrix(1:4, 2))
-check$get()
-
-check$setinv()
-check$getinv()
-ls(environment(check$set))
-
 ## Function II####
 #Conditionally compute inverse.Skip if already calculated
 
 cacheSolve <- function(x, ...) {
-  invx <- x$getinv()
-  if(!is.null(invx)) {
+  invrs <- x$getinv()
+  if(!is.null(invrs)) {
     message("getting cached data")
-    return(invx)
+    return(invrs)
   }
   data <- x$get
-  invx <- solve(data, ...)
-  x$setinv(invx)
-  invx
+  invrs <- solve(data, ...)
+  x$setinv(invrs)
+  invrs
 }
 
 # Clean Up####
